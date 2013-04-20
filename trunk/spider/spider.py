@@ -232,7 +232,7 @@ class Spider:
                 director_content = self.cut_by_str(director_content, self.director_end_cut_point, 'left')
                 director_list = self.catch_director(self.director_pattern, director_content)
                 for director in director_list:
-                    print director
+#                     print director
                     pass
                 
                 # 获取地区
@@ -246,7 +246,8 @@ class Spider:
                 year_content = self.cut_by_str(year_content, self.year_end_cut_point, 'left')
                 year = self.catch_year(self.year_pattern, year_content)
                 if year is not None:
-                    print year
+#                     print year
+                    pass
                 
                 # 获取内容简介
                 content_content = self.cut_by_str(page_content, self.content_start_cut_point)
@@ -259,10 +260,11 @@ class Spider:
                 play_url_content = self.cut_by_str(play_url_content, self.url_end_cut_point, 'left', True)
                 url_list = self.catch_url(self.url_pattern, play_url_content)
                 for dict in url_list:
-                    print dict['url_name']
-                    print dict['bdhd_url']
-                break
-            break
+#                     print dict['url_name']
+#                     print dict['bdhd_url']
+                    pass
+#                 break
+#             break
     
 if __name__ == "__main__":
     Spider().catch()

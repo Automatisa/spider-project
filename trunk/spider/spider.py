@@ -129,7 +129,7 @@ class Spider:
     def catch_title(self, pattern, page_content):
         title = self.handle(pattern, page_content, 'one')
         if title is not None:
-            return title   
+            return title
         
     def catch_actor(self, pattern, page_content):
         actor_list = self.handle(pattern, page_content, 'more')
@@ -137,7 +137,7 @@ class Spider:
         
     def catch_director(self, pattern, page_content):
         director_list = self.handle(pattern, page_content, 'more')
-        return director_list   
+        return director_list
         
     def catch_area(self, pattern, page_content):
         area_content = self.handle(pattern, page_content)

@@ -38,9 +38,9 @@ class Spider:
     area_end_cut_point = "上映"
     area_pattern = r'<li>.*?</li>'
     # ----年份配置----
-    year_start_cut_point = ""
-    year_end_cut_point = ""
-    year_pattern = '[0-9]{4}'
+    date_start_cut_point = ""
+    date_end_cut_point = ""
+    date_pattern = '[0-9]{4}'
     # ----内容配置----
     content_start_cut_point = "omov_list3"
     content_end_cut_point = "o_r_wap_foot"
@@ -123,7 +123,6 @@ class Spider:
             with open(path, 'wb') as pic:
                 pic.write(response)
                         
-#             print pic_url
             return pic_name
             
     def catch_title(self, pattern, page_content):
@@ -145,19 +144,19 @@ class Spider:
             area_content = area_content.replace('地区：', '')
             return area_content
         
-    def catch_year(self, pattern, page_content):
-        year_content = self.catch_by_pattern(pattern, page_content)
-        if year_content is not None:
-            return year_content
+    def catch_date(self, pattern, page_content):
+        date_content = self.catch_by_pattern(pattern, page_content)
+        if date_content is not None:
+            return date_content
         
-    def catch_content(self, pattern, page_content):
-        content = self.handle(pattern, page_content)
-        if content is not None:
+    def catch_intro(self, pattern, page_content):
+        intro = self.handle(pattern, page_content)
+        if intro is not None:
             pattern = r'&[a-z]*?;'
-            html_symbol = re.findall(pattern, content)
+            html_symbol = re.findall(pattern, intro)
             for symbol in html_symbol:
-                content = content.replace(symbol, "")
-            return content
+                intro = intro.replace(symbol, "")
+            return intro
         
     def catch_url(self, pattern, page_content):
         list = []
@@ -242,9 +241,9 @@ class Spider:
 #                 print area
                 
                 # 获取上映时间
-                year_content = self.cut_by_str(page_content, self.year_start_cut_point)
-                year_content = self.cut_by_str(year_content, self.year_end_cut_point, 'left')
-                year = self.catch_year(self.year_pattern, year_content)
+                year_content = self.cut_by_str(page_content, self.date_start_cut_point)
+                year_content = self.cut_by_str(year_content, self.date_end_cut_point, 'left')
+                year = self.catch_date(self.date_pattern, year_content)
                 if year is not None:
 #                     print year
                     pass
@@ -252,7 +251,7 @@ class Spider:
                 # 获取内容简介
                 content_content = self.cut_by_str(page_content, self.content_start_cut_point)
                 content_content = self.cut_by_str(content_content, self.content_end_cut_point, 'left')
-                content = self.catch_content(self.content_pattern, content_content)
+                content = self.catch_intro(self.content_pattern, content_content)
 #                 print content
                     
                 # 获取影片播放页面链接

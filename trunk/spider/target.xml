@@ -1,1 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<site>
+	<domain>http://www.yetwo.com/</domain>
+	<path>
+		<item>dongzuo/</item>
+		<item>xiju/</item>
+	</path>
+	<pagination>index${num}.html</pagination>
+	<total_page>159</total_page>
+	<page_start_cut_point></page_start_cut_point>
+	<page_end_cut_point></page_end_cut_point>
+	
+</site>

@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<site>
-	<domain>http://www.yetwo.com/</domain>
-	<path>
-		<item>dongzuo/</item>
-		<item>xiju/</item>
-	</path>
-	<pagination>index${num}.html</pagination>
-	<total_page>159</total_page>
-	<page_start_cut_point></page_start_cut_point>
-	<page_end_cut_point></page_end_cut_point>
-	
-</site>
+<sites>
+	<site domain="http://www.yetwo.com/">
+		<paths>
+			<path name="dongzuo/">
+				<pagination>
+					<rule>index${num}.html</rule>
+					<startpage>""</startpage>
+					<increment>
+						<start>0</start>
+						<end>159</end>
+					</increment>
+				</pagination>
+			</path>
+			<path url="">
+				<pagination></pagination>
+			</path>
+		</paths>
+		<rules>
+			<rule>
+				<startpoint></startpoint>
+				<endpoint></endpoint>
+				<pattern></pattern>
+				<filters>
+					<pattern></pattern>
+				</filters>
+			</rule>
+			<rule></rule>
+		</rules>
+	</site>
+	<site></site>
+</sites>

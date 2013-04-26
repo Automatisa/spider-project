@@ -84,26 +84,15 @@ class Spider:
         elif one_or_more == 'more':
             return re.findall(pattern, page_content)
         
-    def handle(self, pattern, page_content, one_or_more='one'):
+    def filter_by_patterns(self, result, *patterns):
+        for pattern in patterns:
+            matchs = self.catch_by_pattern(pattern, result, 'more')
+            for item in matchs:
+                result = result.replace(item, '')
+        return result
+    
+    def catch_something(self, pattern, page_content, one_or_more='one'):
         result = self.catch_by_pattern(pattern, page_content, one_or_more)
-        if one_or_more == 'one':
-            if result is not None:
-                pattern = r'<\S[^>]+>'
-                tags = self.catch_by_pattern(pattern, result, 'more')
-                for tag in tags:
-                    result = result.replace(tag, '')
-                return result
-            else:
-                return None
-        elif one_or_more == 'more':
-            list = []
-            for item in result:
-                pattern = r'<\S[^>]+>'
-                tags = self.catch_by_pattern(pattern, item, 'more')
-                for tag in tags:
-                    item = item.replace(tag, '')
-                list.append(item)
-            return list
         
     def catch_image(self, pattern, page_content):
         pic_url = self.catch_by_pattern(pattern, page_content, 'one')
@@ -126,21 +115,31 @@ class Spider:
             return pic_name
             
     def catch_title(self, pattern, page_content):
-        title = self.handle(pattern, page_content, 'one')
+        title = self.catch_by_pattern(pattern, page_content, 'one')
         if title is not None:
+            title = self.filter_by_patterns(title, r'<\S[^>]+>')
             return title
         
     def catch_actor(self, pattern, page_content):
-        actor_list = self.handle(pattern, page_content, 'more')
-        return actor_list
+        actor_list = self.catch_by_pattern(pattern, page_content, 'more')
+        result_list = []
+        for actor in actor_list:
+            actor = self.filter_by_patterns(actor, r'<\S[^>]+>')
+            result_list.append(actor)
+        return result_list
         
     def catch_director(self, pattern, page_content):
-        director_list = self.handle(pattern, page_content, 'more')
-        return director_list
+        director_list = self.catch_by_pattern(pattern, page_content, 'more')
+        result_list = []
+        for director in director_list:
+            director = self.filter_by_patterns(director, r'<\S[^>]+>')
+            result_list.append(director)
+        return result_list
         
     def catch_area(self, pattern, page_content):
-        area_content = self.handle(pattern, page_content)
+        area_content = self.catch_by_pattern(pattern, page_content)
         if area_content is not None:
+            area_content = self.filter_by_patterns(area_content, r'<\S[^>]+>')
             area_content = area_content.replace('地区：', '')
             return area_content
         
@@ -150,21 +149,17 @@ class Spider:
             return date_content
         
     def catch_intro(self, pattern, page_content):
-        intro = self.handle(pattern, page_content)
+        intro = self.catch_by_pattern(pattern, page_content)
         if intro is not None:
-            pattern = r'&[a-z]*?;'
-            html_symbol = re.findall(pattern, intro)
-            for symbol in html_symbol:
-                intro = intro.replace(symbol, "")
+            intro = self.filter_by_patterns(intro, r'<\S[^>]+>', r'&[a-z]*?;')
             return intro
         
     def catch_url(self, pattern, page_content):
-        list = []
+        result_list = []
         a_link_list = self.catch_by_pattern(pattern, page_content, 'more')
-        url_name_pattern = pattern
         for a_link in a_link_list:
             key_list = {}
-            play_url_name = self.handle(url_name_pattern, a_link)
+            play_url_name = self.filter_by_patterns(a_link, r'<\S[^>]+>')
             # 影片链接名称 :BD DVD粤语
             if play_url_name is not None:
                 key_list ['url_name'] = play_url_name
@@ -180,8 +175,8 @@ class Spider:
                     bdhd_url = self.cut_by_str(bdhd_url, '\'', 'left', True)
                     bdhd_url = self.cut_by_str(bdhd_url, '\'', 'right', True)
                     key_list['bdhd_url'] = bdhd_url
-            list.append(key_list)
-        return list
+            result_list.append(key_list)
+        return result_list
             
     def catch(self):
         # 获取每一页的电影链接
@@ -216,14 +211,14 @@ class Spider:
                 image_content = self.cut_by_str(page_content, self.image_start_cut_point)
                 image_content = self.cut_by_str(image_content, self.image_end_cut_point, 'left')
                 image = self.catch_image(self.image_pattern, image_content)
-#                 print image
+                print image
                 
                 # 获取演员
                 actor_content = self.cut_by_str(page_content, self.actor_start_cut_point)
                 actor_content = self.cut_by_str(actor_content, self.actor_end_cut_point, 'left')
                 actor_list = self.catch_actor(self.actor_pattern, actor_content)
                 for actor in actor_list:
-#                     print actor
+                    print actor
                     pass
 
                 # 获取导演
@@ -231,36 +226,36 @@ class Spider:
                 director_content = self.cut_by_str(director_content, self.director_end_cut_point, 'left')
                 director_list = self.catch_director(self.director_pattern, director_content)
                 for director in director_list:
-#                     print director
+                    print director
                     pass
                 
                 # 获取地区
                 area_content = self.cut_by_str(page_content, self.area_start_cut_point)
                 area_content = self.cut_by_str(area_content, self.area_end_cut_point, 'left')
                 area = self.catch_area(self.area_pattern, area_content)
-#                 print area
+                print area
                 
                 # 获取上映时间
                 year_content = self.cut_by_str(page_content, self.date_start_cut_point)
                 year_content = self.cut_by_str(year_content, self.date_end_cut_point, 'left')
                 year = self.catch_date(self.date_pattern, year_content)
                 if year is not None:
-#                     print year
+                    print year
                     pass
                 
                 # 获取内容简介
                 content_content = self.cut_by_str(page_content, self.content_start_cut_point)
                 content_content = self.cut_by_str(content_content, self.content_end_cut_point, 'left')
                 content = self.catch_intro(self.content_pattern, content_content)
-#                 print content
+                print content
                     
                 # 获取影片播放页面链接
                 play_url_content = self.cut_by_str(page_content, self.url_start_cut_point)
                 play_url_content = self.cut_by_str(play_url_content, self.url_end_cut_point, 'left', True)
                 url_list = self.catch_url(self.url_pattern, play_url_content)
                 for dict in url_list:
-#                     print dict['url_name']
-#                     print dict['bdhd_url']
+                    print dict['url_name']
+                    print dict['bdhd_url']
                     pass
 #                 break
 #             break

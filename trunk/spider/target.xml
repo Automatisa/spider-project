@@ -2,31 +2,34 @@
 <sites>
 	<site domain="http://www.yetwo.com/">
 		<paths>
-			<path name="dongzuo/">
+			<path name="动作页面" value="dongzuo/">
 				<pagination>
-					<rule>index${num}.html</rule>
+					<model>index${num}.html</model>
 					<startpage>""</startpage>
 					<increment>
-						<start>0</start>
+						<start>2</start>
 						<end>159</end>
 					</increment>
 				</pagination>
-			</path>
-			<path url="">
-				<pagination></pagination>
+				<rules>
+					<rule>
+						<startpoint></startpoint>
+						<endpoint></endpoint>
+						<pattern></pattern>
+						<filters>
+							<pattern></pattern>
+						</filters>
+						<rule>
+							<startpoint></startpoint>
+							<endpoint></endpoint>
+							<pattern></pattern>
+							<filters>
+								<pattern></pattern>
+							</filters>
+						</rule>
+					</rule>
+				</rules>
 			</path>
 		</paths>
-		<rules>
-			<rule>
-				<startpoint></startpoint>
-				<endpoint></endpoint>
-				<pattern></pattern>
-				<filters>
-					<pattern></pattern>
-				</filters>
-			</rule>
-			<rule></rule>
-		</rules>
 	</site>
-	<site></site>
 </sites>

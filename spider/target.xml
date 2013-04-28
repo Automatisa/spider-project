@@ -13,20 +13,14 @@
 				</pagination>
 				<rules>
 					<rule>
-						<startpoint></startpoint>
-						<endpoint></endpoint>
-						<pattern></pattern>
-						<filters>
-							<pattern></pattern>
-						</filters>
-						<rule>
-							<startpoint></startpoint>
-							<endpoint></endpoint>
-							<pattern></pattern>
-							<filters>
-								<pattern></pattern>
-							</filters>
-						</rule>
+						<cutpoint reverse="true" left_or_right="left">电影索引</endpoint>
+						<pattern multi="true">dongzuo/[0-9]+/</pattern>
+						<params>
+							<param value="no-repeat"></param>
+							<param value="catch">
+								
+							</param>
+						</params>
 					</rule>
 				</rules>
 			</path>
